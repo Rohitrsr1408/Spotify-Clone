@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spotify - Web Player: Music for everyone</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="utility.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+
+  <body>
+    <div class="container flex black">
+      <div class="left black">
+        <div class="home bg-grey rounded m1">
+          <div class="logo">
+            <img src="logo.svg" alt="logo" />
+          </div>
+          <ul>
+            <li><img src="home.svg" alt="home" />Home</li>
+            <li><img src="search.svg" alt="search" />Search</li>
+          </ul>
+        </div>
+
+        <div class="library bg-grey rounded m1 p1">
+          <div class="heading">
+            <h2 class="yourlib">
+              <img class="invert" src="library.svg" /> Your Library
+            </h2>
+          </div>
+            <div class="songList">
+              <ul>
+                <li>
+                  <img src="music.svg"  class="invert">
+                  <div class="info">
+                  <div>Song Name</div>
+                  <div>Song Artist</div>
+                </div>
+                <div class="playnow">
+                  <span>Play Now</span>
+                  <img class="invert" src="play.svg">
+                </div>
+                </li>
+              </ul>
+            </div>
+          <div class="footer">
+            <div>
+              <a href="https://www.spotify.com/in-en/legal/">
+                <span>Legal</span>
+              </a>
+            </div>
+            <div>
+              <a href="https://www.spotify.com/in-en/safetyandprivacy/">
+                <span>Safety &amp; Privacy Center</span>
+              </a>
+            </div>
+            <div>
+              <a href="https://www.spotify.com/in-en/legal/privacy-policy/">
+                <span>Privacy Policy</span>
+              </a>
+            </div>
+            <div>
+              <a href="https://www.spotify.com/in-en/legal/cookies-policy/">
+                <span>Cookies</span>
+              </a>
+            </div>
+            <div>
+              <a href="https://www.spotify.com/in-en/legal/privacy-policy/#s3">
+                <span>About Ads</span>
+              </a>
+            </div>
+            <div>
+              <a href="https://www.spotify.com/in-en/accessibility/">
+                <span>Accessibility</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right bg-grey rounded">
+        <div class="header flex">
+          <div class="nav">
+            <i class="fa-solid fa-chevron-left" style="color: #bababa"></i>
+            <i class="fa-solid fa-chevron-right" style="color: #bababa"></i>
+          </div>
+          <div class="buttons">
+            <button class="signup">Sign up</button>
+            <button class="login">Log in</button>
+          </div>
+        </div>
+        <div class="spotifyPlaylists">
+          <h1>Spotify Playlists</h1>
+          <div class="cardContainer ">
+            <div class="card ">
+             
+              <img src="https://i2o.scdn.co/image/ab67706c0000cfa31f94f6a5a709197444c1c6ed">
+              <h2>Animal All Songs</h2>
+              <p>By Good Vibes🔥</p>
+              <div class="play">
+                <svg class="circle-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                  <circle class="circle-background" cx="50" cy="50" r="50"/>
+                  <g class="svg-container">
+                    <svg class="svg-icon" viewBox="0 0 24 24" fill="#000000">
+                      <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"></path>
+                    </svg>
+                  </g>
+                </svg>                                 
+                 
+              </div>
+            </div>
+            <div class="card ">
+              <img src="https://i2o.scdn.co/image/ab67706c0000cfa31f94f6a5a709197444c1c6ed">
+              <h2>Animal All Songs</h2>
+              <p>By Good Vibes🔥</p> 
+              <svg class="circle-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <circle class="circle-background" cx="50" cy="50" r="50"/>
+                <g class="svg-container">
+                  <svg class="svg-icon" viewBox="0 0 24 24" fill="#000000">
+                    <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"></path>
+                  </svg>
+          </div>
+        </div>
+      </div>
+      <div class="playbar">
+        <div class="seekbar">
+          <div class="circle"></div>
+        </div>
+        <div class="songInfo">
+        </div>
+        <div class="songbuttons">
+        <img class="previous" src="previous.svg" alt="">
+        <img class="play"src="play.svg" alt="">
+        <img class="next" src="next.svg" alt="">
+      </div>
+      <div class="songTime"></div>
+      </div>
+    </div>
+    <script src="app.js"></script> 
+  </body>
+</html>
