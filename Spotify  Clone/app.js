@@ -34,7 +34,7 @@ function secondsToMinuteSeconds(seconds) {
 function playMusic(track) {
   currentSong.src = "/Spotify%20%20Clone/songs/" + track;
   currentSong.play();
-  play.src = "pause.svg";
+  play.src = "svgs/pause.svg";
   document.querySelector(".songInfo").innerHTML = track;
   document.querySelector(".songTime").innerHTML = "00:00/00:00";
 }
@@ -60,14 +60,14 @@ async function main() {
   for (let song of songList) {
     let songName = document.createElement("li");
     songName.innerHTML = `  
-    <img src="music.svg"  class="invert">
+    <img src="svgs/music.svg"  class="invert">
     <div class="info">
     <div>${song.replaceAll("-", "")}</div>
     <div>RSR</div>
   </div>
   <div class="playnow">
     <span>Play Now</span>
-    <img class="invert" src="play.svg">
+    <img class="invert" src="svgs/play.svg">
   </div>`;
 
     listOfSongs.appendChild(songName);
@@ -83,13 +83,13 @@ async function main() {
   play.addEventListener("click", () => {
     if (currentSong.paused) {
       currentSong.play();
-      play.src = "pause.svg";
+      play.src = "svgs/pause.svg";
       document.querySelector(".songInfo").innerHTML = songs[0]
         .split("/songs/")[1]
         .replaceAll("%20", "");
     } else {
       currentSong.pause();
-      play.src = "play.svg";
+      play.src = "svgs/play.svg";
     }
   });
 
@@ -108,5 +108,15 @@ async function main() {
   });
   //     var audio = new Audio(songs[2]);
   //   audio.play();
+
+  //hamburger event
+  document.querySelector(".nav .hamburger").addEventListener("click", () => {
+    document.querySelector(".left").style.left = "0";
+  });
+  //cross event
+  document.querySelector(".cross").addEventListener("click", () => {
+    document.querySelector(".left").style.left = "-120%";
+  });
 }
 main();
+
