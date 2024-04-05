@@ -2,7 +2,7 @@ let currentSong = new Audio();
 
 let play = document.querySelector(".songbuttons .play");
 async function getSongs() {
-  let a = await fetch("http://127.0.0.1:5500/Spotify%20%20Clone/songs/");
+  let a = await fetch("http://127.0.0.1:5500/Spotify-Clone/songs/");
   let response = await a.text();
   //    console.log(response);
   let div = document.createElement("div");
@@ -32,7 +32,7 @@ function secondsToMinuteSeconds(seconds) {
 // Example usage:
 
 function playMusic(track) {
-  currentSong.src = "/Spotify%20%20Clone/songs/" + track;
+  currentSong.src = "/Spotify-Clone/songs/" + track;
   currentSong.play();
   play.src = "svgs/pause.svg";
   document.querySelector(".songInfo").innerHTML = track;
