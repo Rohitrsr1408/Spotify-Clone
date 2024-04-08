@@ -324,7 +324,17 @@ transition: 0.3s transform;
     left: 0%;
     transition: left 0.2s;
 }
+
+.songInfo{
+    width:220px ;
+}
+.songTime{
+    width:120px;
+}
 .play{
+    cursor: pointer;
+}
+.previous,.next{
     cursor: pointer;
 }
 .displayBar{
@@ -375,6 +385,8 @@ transition: 0.3s transform;
 
    .songInfo,.songTime{
     font-size: 14px;
+    display: flex;
+    justify-content: center;
    }
     .playbar{
         width: 93.3vw;

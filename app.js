@@ -84,9 +84,6 @@ async function main() {
     if (currentSong.paused) {
       currentSong.play();
       play.src = "svgs/pause.svg";
-      document.querySelector(".songInfo").innerHTML = songs[0]
-        .split("/songs/")[1]
-        .replaceAll("%20", "");
     } else {
       currentSong.pause();
       play.src = "svgs/play.svg";
@@ -117,5 +114,45 @@ async function main() {
   document.querySelector(".cross").addEventListener("click", () => {
     document.querySelector(".left").style.left = "-120%";
   });
+
+  // adding event listener for previous and next
+  document.querySelector(".previous").addEventListener("click", () => {
+
+    let index = 0;
+    for (let i = 0; i < songs.length; i++) {
+      if (songs[i] === currentSong.src) {
+        index = i;
+      }
+    }
+    if (index === 0) {
+      currentSong.src = songs[0];
+      currentSong.play();
+    } else {
+      currentSong.src = songs[index - 1];
+      currentSong.play();
+      play.src = "svgs/pause.svg";
+      document.querySelector(".songInfo").innerHTML = songList[index-1];
+    }
+  });
+
+  document.querySelector(".next").addEventListener("click", () => {
+    console.log("next clicked");
+    let index = 0;
+    for (let i = 0; i < songs.length; i++) {
+      if (songs[i] === currentSong.src) {
+        index = i;
+      }
+    }
+    if (index === songs.length-1) {
+      currentSong.src = songs[songs.length-1];
+      currentSong.play();
+    } else {
+      currentSong.src = songs[index + 1];
+      currentSong.play();
+      play.src = "svgs/pause.svg";
+      document.querySelector(".songInfo").innerHTML = songList[index+1];
+    }
+  });
 }
+
 main();
