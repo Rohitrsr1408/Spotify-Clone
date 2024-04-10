@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+:root{
+    --a:0;
+}
+
 *{
     padding:0;
     margin:0;
@@ -174,18 +178,23 @@ padding-right: 7px;
     position: absolute;
     top: 148px;
     right: 11px;
-    opacity: 0;
-    transition: all 1s ease-out;
-
+    opacity: var(--a);
+    transition: all 0.8s ease-out;
+    cursor: pointer;
 }
 
 .card{
     width: 170px;
     padding: 10px;
     border-radius: 5px;
-    background-color: #252525;
+    background-color: #393939;
     position: relative;
     font-size: 14px;
+}
+.card:hover{
+    transition: all 0.4s;
+    background-color: rgb(95, 94, 94);
+    --a:1;
 }
 .card >*{
     padding-top: 6px;

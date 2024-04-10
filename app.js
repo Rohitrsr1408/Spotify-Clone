@@ -1,57 +1,27 @@
 let currentSong = new Audio();
-
+let songs;
+let currfolder;
 let play = document.querySelector(".songbuttons .play");
-async function getSongs() {
-  let a = await fetch("http://127.0.0.1:5500/Spotify-Clone/songs/");
+async function getSongs(folder) {
+  currfolder = folder;
+  let a = await fetch(`http://127.0.0.1:5500/Spotify-Clone/songs/${folder}`);
   let response = await a.text();
   //    console.log(response);
   let div = document.createElement("div");
   div.innerHTML = response;
   let as = div.getElementsByTagName("a");
-  let songs = [];
+  songs = [];
   for (let i = 0; i < as.length; i++) {
     if (as[i].href.endsWith(".mp3")) {
       songs.push(as[i].href);
     }
   }
-  return songs;
-}
 
-let listOfSongs = document.querySelector(".songList ul");
-//for converting seconds to minutes
-function secondsToMinuteSeconds(seconds) {
-  var minutes = Math.floor(seconds / 60);
-  var remainingSeconds = Math.floor(seconds % 60);
-  return (
-    minutes.toString().padStart(2, "0") +
-    ":" +
-    remainingSeconds.toString().padStart(2, "0")
-  );
-}
-
-// Example usage:
-
-function playMusic(track) {
-  currentSong.src = "/Spotify-Clone/songs/" + track;
-  currentSong.play();
-  play.src = "svgs/pause.svg";
-  document.querySelector(".songInfo").innerHTML = track;
-  document.querySelector(".songTime").innerHTML = "00:00/00:00";
-}
-
-async function main() {
-  let clickCount = 0;
-  let songs = await getSongs();
-  currentSong.src = songs[0];
-  document.querySelector(".songInfo").innerHTML = songs[0]
-    .split("/songs/")[1]
-    .replaceAll("%20", "");
-  document.querySelector(".songTime").innerHTML = "00:00/00:00";
   let songList = [];
   for (let song of songs) {
     songList.push(
       song
-        .split("songs/")[1]
+        .split(`songs/${currfolder}/`)[1]
         .replaceAll("%20", " ")
         .replaceAll("(PagalWorld.Com.IN)", "")
         .replaceAll("(PagalWorld.com.cm)", "")
@@ -80,6 +50,56 @@ async function main() {
       playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim());
     });
   });
+}
+
+let listOfSongs = document.querySelector(".songList ul");
+//for converting seconds to minutes
+function secondsToMinuteSeconds(seconds) {
+  var minutes = Math.floor(seconds / 60);
+  var remainingSeconds = Math.floor(seconds % 60);
+  return (
+    minutes.toString().padStart(2, "0") +
+    ":" +
+    remainingSeconds.toString().padStart(2, "0")
+  );
+}
+
+// Example usage:
+
+function playMusic(track) {
+  currentSong.src = `/Spotify-Clone/songs/${currfolder}/` + track;
+  currentSong.play();
+  play.src = "svgs/pause.svg";
+  document.querySelector(".songInfo").innerHTML = track;
+  document.querySelector(".songTime").innerHTML = "00:00/00:00";
+}
+
+async function displayAlbums() {
+  let a = await fetch(`http://127.0.0.1:5500/Spotify-Clone/songs/`);
+  let response = await a.text();
+  //    console.log(response);
+  let div = document.createElement("div");
+  div.innerHTML = response;
+  let anchors=div.getElementsByTagName('a');
+  Array.from(anchors).forEach(e=>{
+    
+    if(e.href.includes('/songs/')){
+      console.log(e.href.split("/")[5]);
+    };
+  })
+}
+
+async function main() {
+  let clickCount = 0;
+  await getSongs("Animal");
+  currentSong.src = songs[0];
+  document.querySelector(".songInfo").innerHTML = songs[0]
+    .split(`/songs/${currfolder}/`)[1]
+    .replaceAll("%20", "");
+  document.querySelector(".songTime").innerHTML = "00:00/00:00";
+
+  //Display all albums
+  displayAlbums();
   //Attach an event to play the song
   play.addEventListener("click", () => {
     if (currentSong.paused) {
@@ -181,6 +201,14 @@ async function main() {
       currentSong.volume = "0.5";
       document.querySelector(".volume input").value = "50";
     }
+  });
+
+  Array.from(document.querySelectorAll(".card")).forEach((e) => {
+    e.addEventListener("click", async (item) => {
+      listOfSongs.innerHTML = "";
+      console.log(item.currentTarget.dataset.folder);
+      songs = await getSongs(`${item.currentTarget.dataset.folder}`);
+    });
   });
 }
 
