@@ -220,7 +220,8 @@ padding-right: 7px;
     
 }
 .songbuttons{
-   gap:10px;
+    transform: scale(1.3);
+   gap:7px;
    margin-bottom: 20px;
    padding:0 30px;
 }
@@ -329,7 +330,7 @@ transition: 0.3s transform;
     width:220px ;
 }
 .songTime{
-    width:120px;
+    width:125px;
 }
 .play{
     cursor: pointer;
@@ -348,7 +349,21 @@ transition: 0.3s transform;
     color: white;
     filter:invert(1);
 }
+.volume{
+        display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+   
+}
 
+.timevol{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 18px;
+}
 
 @media (max-width:1412px) {
     .left{
@@ -381,6 +396,7 @@ transition: 0.3s transform;
         margin-right: -12px;
         margin-left: -16px;
         margin-bottom: 0;
+        transform: scale(1);
     }
 
    .songInfo,.songTime{
@@ -410,10 +426,19 @@ transition: 0.3s transform;
    .aboveBar{
     flex-direction: column;
     align-items: center;
-    gap:5px;
+    gap:14px;
     margin-bottom: 22px;
-    margin-top: -6px;
+    margin-top: -2px;
    }
+   .timevol{
+    flex-direction: column;
+    gap:6px;
+   }
+  .volume img{
+    height:18px;
+    cursor: pointer;
+  }
+ 
     /* .displayBar{
         padding:0px;
     } */

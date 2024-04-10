@@ -40,6 +40,7 @@ function playMusic(track) {
 }
 
 async function main() {
+  let clickCount = 0;
   let songs = await getSongs();
   currentSong.src = songs[0];
   document.querySelector(".songInfo").innerHTML = songs[0]
@@ -117,7 +118,6 @@ async function main() {
 
   // adding event listener for previous and next
   document.querySelector(".previous").addEventListener("click", () => {
-
     let index = 0;
     for (let i = 0; i < songs.length; i++) {
       if (songs[i] === currentSong.src) {
@@ -131,7 +131,7 @@ async function main() {
       currentSong.src = songs[index - 1];
       currentSong.play();
       play.src = "svgs/pause.svg";
-      document.querySelector(".songInfo").innerHTML = songList[index-1];
+      document.querySelector(".songInfo").innerHTML = songList[index - 1];
     }
   });
 
@@ -143,14 +143,43 @@ async function main() {
         index = i;
       }
     }
-    if (index === songs.length-1) {
-      currentSong.src = songs[songs.length-1];
+    if (index === songs.length - 1) {
+      currentSong.src = songs[songs.length - 1];
       currentSong.play();
     } else {
       currentSong.src = songs[index + 1];
       currentSong.play();
       play.src = "svgs/pause.svg";
-      document.querySelector(".songInfo").innerHTML = songList[index+1];
+      document.querySelector(".songInfo").innerHTML = songList[index + 1];
+    }
+  });
+
+  //event for changing volume
+  document.querySelector(".volume input").addEventListener("change", (e) => {
+    currentSong.volume = e.target.value / 100;
+    if (e.target.value === "0") {
+      document.querySelector(".volume img").src = "svgs/mute.svg";
+    } else if (e.target.value < 50 && e.target.value > 0) {
+      document.querySelector(".volume img").src = "svgs/lowVolume.svg";
+    } else {
+      document.querySelector(".volume img").src = "svgs/volume.svg";
+    }
+  });
+
+  document.querySelector(".volume img").addEventListener("click", (e) => {
+    clickCount++;
+
+    if (
+      clickCount % 2 != 0 &&
+      document.querySelector(".volume input").value != "0"
+    ) {
+      document.querySelector(".volume img").src = "svgs/mute.svg";
+      currentSong.volume = "0";
+      document.querySelector(".volume input").value = "0";
+    } else {
+      document.querySelector(".volume img").src = "svgs/volume.svg";
+      currentSong.volume = "0.5";
+      document.querySelector(".volume input").value = "50";
     }
   });
 }
