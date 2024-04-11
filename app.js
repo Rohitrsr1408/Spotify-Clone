@@ -3,9 +3,10 @@ let songs;
 let currfolder;
 let cardContainer = document.querySelector(".cardContainer");
 let play = document.querySelector(".songbuttons .play");
+let songList = [];
 async function getSongs(folder) {
   currfolder = folder;
-  let a = await fetch(`http://127.0.0.1:5500/Spotify-Clone/songs/${folder}`);
+  let a = await fetch(`/Spotify-Clone/songs/${folder}`);
   let response = await a.text();
   //    console.log(response);
   let div = document.createElement("div");
@@ -18,7 +19,6 @@ async function getSongs(folder) {
     }
   }
 
-  let songList = [];
   for (let song of songs) {
     songList.push(
       song
@@ -77,7 +77,7 @@ function playMusic(track) {
 }
 
 async function displayAlbums() {
-  let a = await fetch(`http://127.0.0.1:5500/Spotify-Clone/songs/`);
+  let a = await fetch(`/Spotify-Clone/songs/`);
   let response = await a.text();
   //    console.log(response);
   let div = document.createElement("div");
@@ -90,9 +90,7 @@ async function displayAlbums() {
     if (e.href.includes("/songs/")) {
       let folder = e.href.split("/")[5];
 
-      let a = await fetch(
-        `http://127.0.0.1:5500/Spotify-Clone/songs/${folder}/info.json`
-      );
+      let a = await fetch(`/Spotify-Clone/songs/${folder}/info.json`);
       let response = await a.json();
       cardContainer.innerHTML =
         cardContainer.innerHTML +
@@ -110,15 +108,32 @@ async function displayAlbums() {
       Array.from(document.querySelectorAll(".card")).forEach((e) => {
         e.addEventListener("click", async (item) => {
           listOfSongs.innerHTML = "";
+          songList = [];
           console.log(item.currentTarget.dataset.folder);
           songs = await getSongs(`${item.currentTarget.dataset.folder}`);
-          playMusic(songs[0].split("/")[6].replaceAll("%20"," "));
+          playMusic(songs[0].split("/")[6].replaceAll("%20", " "));
         });
       });
     }
   }
 }
-
+function playNext() {
+  let index = 0;
+  for (let i = 0; i < songs.length; i++) {
+    if (songs[i] === currentSong.src) {
+      index = i;
+    }
+  }
+  if (index === songs.length - 1) {
+    currentSong.src = songs[songs.length - 1];
+    currentSong.play();
+  } else {
+    currentSong.src = songs[index + 1];
+    currentSong.play();
+    play.src = "svgs/pause.svg";
+    document.querySelector(".songInfo").innerHTML = songList[index + 1];
+  }
+}
 async function main() {
   let clickCount = 0;
   await getSongs("Animal");
@@ -147,6 +162,12 @@ async function main() {
     )} / ${secondsToMinuteSeconds(currentSong.duration)}`;
     document.querySelector(".seekbar .circle").style.left =
       (currentSong.currentTime / currentSong.duration) * 100 + "%";
+    if (
+      secondsToMinuteSeconds(currentSong.currentTime) ===
+      secondsToMinuteSeconds(currentSong.duration)
+    ) {
+      playNext();
+    }
   });
 
   document.querySelector(".seekbar").addEventListener("click", (e) => {
@@ -201,6 +222,7 @@ async function main() {
       currentSong.play();
       play.src = "svgs/pause.svg";
       document.querySelector(".songInfo").innerHTML = songList[index + 1];
+      console.log(index, songList);
     }
   });
 
@@ -235,3 +257,4 @@ async function main() {
 }
 
 main();
+
