@@ -233,6 +233,7 @@ padding-right: 7px;
    gap:7px;
    margin-bottom: 20px;
    padding:0 30px;
+   max-height:28px;
 }
 .songList{
    width:98%;
