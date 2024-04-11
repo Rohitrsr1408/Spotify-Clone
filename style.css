@@ -395,6 +395,9 @@ transition: 0.3s transform;
     .cross{
         display: block;
     }
+    .cardContainer{
+        transition: 1s ease-in-out;
+    }
     
 }
 
@@ -425,10 +428,11 @@ transition: 0.3s transform;
         width:85vw;
     }
     .card{
-        width: 75vw;
+        width: auto;
         margin: 5px;
     }
     .cardContainer{
+        transition: 1s ease-in-out;
         margin:0;
         justify-content: center;
     }
@@ -452,3 +456,9 @@ transition: 0.3s transform;
         padding:0px;
     } */
 } 
+
+@media(max-height:700px) {
+    .playbar{
+        height: 18vh;
+    }
+}

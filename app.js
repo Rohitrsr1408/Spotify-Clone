@@ -1,6 +1,7 @@
 let currentSong = new Audio();
 let songs;
 let currfolder;
+let cardContainer = document.querySelector(".cardContainer");
 let play = document.querySelector(".songbuttons .play");
 async function getSongs(folder) {
   currfolder = folder;
@@ -50,6 +51,7 @@ async function getSongs(folder) {
       playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim());
     });
   });
+  return songs;
 }
 
 let listOfSongs = document.querySelector(".songList ul");
@@ -80,13 +82,41 @@ async function displayAlbums() {
   //    console.log(response);
   let div = document.createElement("div");
   div.innerHTML = response;
-  let anchors=div.getElementsByTagName('a');
-  Array.from(anchors).forEach(e=>{
-    
-    if(e.href.includes('/songs/')){
-      console.log(e.href.split("/")[5]);
-    };
-  })
+  let anchors = div.getElementsByTagName("a");
+
+  let arr = Array.from(anchors);
+  for (let index = 0; index < arr.length; index++) {
+    let e = arr[index];
+    if (e.href.includes("/songs/")) {
+      let folder = e.href.split("/")[5];
+
+      let a = await fetch(
+        `http://127.0.0.1:5500/Spotify-Clone/songs/${folder}/info.json`
+      );
+      let response = await a.json();
+      cardContainer.innerHTML =
+        cardContainer.innerHTML +
+        ` <div data-folder="${folder}" class="card ">
+      <img src="songs/${folder}/cover.webp">
+      <h2>${response.title}</h2>
+      <p>${response.description}</p> 
+      <svg class="circle-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+        <circle class="circle-background" cx="50" cy="50" r="50"/>
+        <g class="svg-container">
+          <svg class="svg-icon" viewBox="0 0 24 24" fill="#000000">
+            <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"></path>
+          </svg>
+  </div>`;
+      Array.from(document.querySelectorAll(".card")).forEach((e) => {
+        e.addEventListener("click", async (item) => {
+          listOfSongs.innerHTML = "";
+          console.log(item.currentTarget.dataset.folder);
+          songs = await getSongs(`${item.currentTarget.dataset.folder}`);
+          playMusic(songs[0].split("/")[6].replaceAll("%20"," "));
+        });
+      });
+    }
+  }
 }
 
 async function main() {
@@ -201,14 +231,6 @@ async function main() {
       currentSong.volume = "0.5";
       document.querySelector(".volume input").value = "50";
     }
-  });
-
-  Array.from(document.querySelectorAll(".card")).forEach((e) => {
-    e.addEventListener("click", async (item) => {
-      listOfSongs.innerHTML = "";
-      console.log(item.currentTarget.dataset.folder);
-      songs = await getSongs(`${item.currentTarget.dataset.folder}`);
-    });
   });
 }
 
