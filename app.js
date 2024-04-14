@@ -6,9 +6,8 @@ let play = document.querySelector(".songbuttons .play");
 let songList = [];
 async function getSongs(folder) {
   currfolder = folder;
-  let a = await fetch(`/Spotify-Clone/songs/${folder}`);
+  let a = await fetch(`/songs/${folder}`);
   let response = await a.text();
-  //    console.log(response);
   let div = document.createElement("div");
   div.innerHTML = response;
   let as = div.getElementsByTagName("a");
@@ -47,7 +46,7 @@ async function getSongs(folder) {
 
   Array.from(document.querySelectorAll(".songList li")).forEach((e) => {
     e.addEventListener("click", (element) => {
-      console.log(e.querySelector(".info").firstElementChild.innerHTML.trim());
+      //console.log(e.querySelector(".info").firstElementChild.innerHTML.trim());
       playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim());
     });
   });
@@ -69,7 +68,7 @@ function secondsToMinuteSeconds(seconds) {
 // Example usage:
 
 function playMusic(track) {
-  currentSong.src = `/Spotify-Clone/songs/${currfolder}/` + track;
+  currentSong.src = `/songs/${currfolder}/` + track;
   currentSong.play();
   play.src = "svgs/pause.svg";
   document.querySelector(".songInfo").innerHTML = track;
@@ -77,20 +76,24 @@ function playMusic(track) {
 }
 
 async function displayAlbums() {
-  let a = await fetch(`/Spotify-Clone/songs/`);
+  let a = await fetch(`/songs/`);
+ //console.log(a);
   let response = await a.text();
-  //    console.log(response);
+  //console.log(response);
+  
   let div = document.createElement("div");
   div.innerHTML = response;
   let anchors = div.getElementsByTagName("a");
-
+  
   let arr = Array.from(anchors);
   for (let index = 0; index < arr.length; index++) {
     let e = arr[index];
     if (e.href.includes("/songs/")) {
-      let folder = e.href.split("/")[5];
-
-      let a = await fetch(`/Spotify-Clone/songs/${folder}/info.json`);
+      console.log(e.href);
+      let link = e.href.split("/");
+      var folder = link[link.length-1];
+        
+      let a = await fetch(`/songs/${folder}/info.json`);
       let response = await a.json();
       cardContainer.innerHTML =
         cardContainer.innerHTML +
@@ -109,9 +112,10 @@ async function displayAlbums() {
         e.addEventListener("click", async (item) => {
           listOfSongs.innerHTML = "";
           songList = [];
-          console.log(item.currentTarget.dataset.folder);
+          //console.log(item.currentTarget.dataset.folder);
           songs = await getSongs(`${item.currentTarget.dataset.folder}`);
-          playMusic(songs[0].split("/")[6].replaceAll("%20", " "));
+          var splitit= songs[0].split("/");
+          playMusic(splitit[splitit.length-1].replaceAll("%20", " "));
         });
       });
     }
@@ -207,7 +211,7 @@ async function main() {
   });
 
   document.querySelector(".next").addEventListener("click", () => {
-    console.log("next clicked");
+   // console.log("next clicked");
     let index = 0;
     for (let i = 0; i < songs.length; i++) {
       if (songs[i] === currentSong.src) {
@@ -222,7 +226,7 @@ async function main() {
       currentSong.play();
       play.src = "svgs/pause.svg";
       document.querySelector(".songInfo").innerHTML = songList[index + 1];
-      console.log(index, songList);
+      //console.log(index, songList);
     }
   });
 
