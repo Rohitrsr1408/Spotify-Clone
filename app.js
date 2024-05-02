@@ -77,22 +77,22 @@ function playMusic(track) {
 
 async function displayAlbums() {
   let a = await fetch(`/songs/`);
- //console.log(a);
+  //console.log(a);
   let response = await a.text();
   //console.log(response);
-  
+
   let div = document.createElement("div");
   div.innerHTML = response;
   let anchors = div.getElementsByTagName("a");
-  
+
   let arr = Array.from(anchors);
   for (let index = 0; index < arr.length; index++) {
     let e = arr[index];
     if (e.href.includes("/songs/")) {
       console.log(e.href);
       let link = e.href.split("/");
-      var folder = link[link.length-1];
-        
+      var folder = link[link.length - 1];
+
       let a = await fetch(`/songs/${folder}/info.json`);
       let response = await a.json();
       cardContainer.innerHTML =
@@ -114,8 +114,8 @@ async function displayAlbums() {
           songList = [];
           //console.log(item.currentTarget.dataset.folder);
           songs = await getSongs(`${item.currentTarget.dataset.folder}`);
-          var splitit= songs[0].split("/");
-          playMusic(splitit[splitit.length-1].replaceAll("%20", " "));
+          var splitit = songs[0].split("/");
+          playMusic(splitit[splitit.length - 1].replaceAll("%20", " "));
         });
       });
     }
@@ -141,6 +141,7 @@ function playNext() {
 async function main() {
   let clickCount = 0;
   await getSongs("Animal");
+  document.querySelector(".volume input").value = "100";
   currentSong.src = songs[0];
   document.querySelector(".songInfo").innerHTML = songs[0]
     .split(`/songs/${currfolder}/`)[1]
@@ -211,7 +212,7 @@ async function main() {
   });
 
   document.querySelector(".next").addEventListener("click", () => {
-   // console.log("next clicked");
+    // console.log("next clicked");
     let index = 0;
     for (let i = 0; i < songs.length; i++) {
       if (songs[i] === currentSong.src) {
@@ -261,4 +262,3 @@ async function main() {
 }
 
 main();
-
