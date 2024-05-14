@@ -4,17 +4,34 @@ let currfolder;
 let cardContainer = document.querySelector(".cardContainer");
 let play = document.querySelector(".songbuttons .play");
 let songList = [];
+const access_token = "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";
 async function getSongs(folder) {
   currfolder = folder;
-  let a = await fetch(`/songs/${folder}`);
-  let response = await a.text();
+  let a = await fetch(
+    `https://api.github.com/repos/Rohitrsr1408/Spotify-Clone/contents/songs/${folder}`,
+    {
+      headers: {
+        Authorization: `token${access_token}`,
+      },
+    }
+  );
+
+  if (!a.ok) {
+    throw new Error(
+      `Failed to fetch folder contents. Status code: ${a.status}`
+    );
+  }
+  let response = await a.json();
+
   let div = document.createElement("div");
   div.innerHTML = response;
-  let as = div.getElementsByTagName("a");
+
   songs = [];
-  for (let i = 0; i < as.length; i++) {
-    if (as[i].href.endsWith(".mp3")) {
-      songs.push(as[i].href);
+
+  for (let i = 0; i < response.length; i++) {
+    const element = response[i];
+    if (element.name.endsWith(".mp3")) {
+      songs.push(element.url.replaceAll("?ref=main", ""));
     }
   }
 
@@ -68,7 +85,9 @@ function secondsToMinuteSeconds(seconds) {
 // Example usage:
 
 function playMusic(track) {
-  currentSong.src = `/songs/${currfolder}/` + track;
+  currentSong.src =
+    `https://raw.githubusercontent.com/Rohitrsr1408/Spotify-Clone/main/songs/${currfolder}/` +
+    track;
   currentSong.play();
   play.src = "svgs/pause.svg";
   document.querySelector(".songInfo").innerHTML = track;
@@ -76,31 +95,58 @@ function playMusic(track) {
 }
 
 async function displayAlbums() {
-  let a = await fetch(`/songs/`);
+  let a = await fetch(
+    `https://api.github.com/repos/Rohitrsr1408/Spotify-Clone/contents/songs/`,
+    {
+      headers: {
+        Authorization: `token  ${access_token}`,
+      },
+    }
+  );
   //console.log(a);
-  let response = await a.text();
-  //console.log(response);
+  let response = await a.json();
 
   let div = document.createElement("div");
   div.innerHTML = response;
-  let anchors = div.getElementsByTagName("a");
 
-  let arr = Array.from(anchors);
+  let urls = [];
+
+  Array.from(response).forEach((e) => {
+    urls.push(e.url);
+  });
+
+  let arr = Array.from(urls);
   for (let index = 0; index < arr.length; index++) {
     let e = arr[index];
-    if (e.href.includes("/songs/")) {
-      console.log(e.href);
-      let link = e.href.split("/");
-      var folder = link[link.length - 1];
+    if (e.includes("/songs/")) {
+      // console.log(e.href);
 
-      let a = await fetch(`/songs/${folder}/info.json`);
-      let response = await a.json();
+      let link = e.split("/");
+
+      var folder = link[link.length - 1].replaceAll("?ref=main", "");
+
+      let a = await fetch(
+        `https://api.github.com/repos/Rohitrsr1408/Spotify-Clone/contents/songs/${folder}/info.json`,
+        {
+          headers: {
+            Authorization: `token ${access_token}`,
+          },
+        }
+      );
+      let data = await a.json();
+
+      let encodedData = data.content;
+      const decodedData = atob(encodedData);
+      const utf8DecodedData = decodeURIComponent(escape(decodedData));
+
+      const JsonData = JSON.parse(utf8DecodedData);
+
       cardContainer.innerHTML =
         cardContainer.innerHTML +
         ` <div data-folder="${folder}" class="card ">
       <img src="songs/${folder}/cover.webp">
-      <h2>${response.title}</h2>
-      <p>${response.description}</p> 
+      <h2>${JsonData.title}</h2>
+      <p>${JsonData.description}</p> 
       <svg class="circle-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
         <circle class="circle-background" cx="50" cy="50" r="50"/>
         <g class="svg-container">
@@ -108,6 +154,7 @@ async function displayAlbums() {
             <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"></path>
           </svg>
   </div>`;
+
       Array.from(document.querySelectorAll(".card")).forEach((e) => {
         e.addEventListener("click", async (item) => {
           listOfSongs.innerHTML = "";
@@ -128,12 +175,16 @@ function playNext() {
       index = i;
     }
   }
+
   if (index === songs.length - 1) {
-    currentSong.src = songs[songs.length - 1];
+    currentSong.src = songs[0];
+    console.log("yes");
     currentSong.play();
+    document.querySelector(".songInfo").innerHTML = songList[0];
   } else {
     currentSong.src = songs[index + 1];
     currentSong.play();
+    console.log("yes");
     play.src = "svgs/pause.svg";
     document.querySelector(".songInfo").innerHTML = songList[index + 1];
   }
@@ -220,8 +271,9 @@ async function main() {
       }
     }
     if (index === songs.length - 1) {
-      currentSong.src = songs[songs.length - 1];
+      currentSong.src = songs[0];
       currentSong.play();
+      document.querySelector(".songInfo").innerHTML = songList[0];
     } else {
       currentSong.src = songs[index + 1];
       currentSong.play();
@@ -262,3 +314,4 @@ async function main() {
 }
 
 main();
+
