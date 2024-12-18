@@ -4,22 +4,20 @@ let currfolder;
 let cardContainer = document.querySelector(".cardContainer");
 let play = document.querySelector(".songbuttons .play");
 let songList = [];
-const access_token = "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";
+const access_token = "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";
+
 async function getSongs(folder) {
   currfolder = folder;
   let a = await fetch(
     `https://api.github.com/repos/Rohitrsr1408/Spotify-Clone/contents/songs/${folder}`,
     {
       headers: {
-        Authorization: `token${access_token}`,
+        Authorization: `token ${access_token}`, // Add a space after "token"
       },
     }
   );
-
   if (!a.ok) {
-    throw new Error(
-      `Failed to fetch folder contents. Status code: ${a.status}`
-    );
+    throw new Error(`HTTP error! Status: ${a.status}`);
   }
   let response = await a.json();
 
