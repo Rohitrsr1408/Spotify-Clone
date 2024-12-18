@@ -4,17 +4,17 @@ let currfolder;
 let cardContainer = document.querySelector(".cardContainer");
 let play = document.querySelector(".songbuttons .play");
 let songList = [];
-const access_token = "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";
+// const access_token = "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";
 
 async function getSongs(folder) {
   currfolder = folder;
   let a = await fetch(
     `https://api.github.com/repos/Rohitrsr1408/Spotify-Clone/contents/songs/${folder}`,
-    {
-      headers: {
-        Authorization: `token ${access_token}`, // Add a space after "token"
-      },
-    }
+    // {
+    //   headers: {
+    //     Authorization: `token ${access_token}`, // Add a space after "token"
+    //   },
+    // }
   );
   if (!a.ok) {
     throw new Error(`HTTP error! Status: ${a.status}`);
@@ -95,11 +95,11 @@ function playMusic(track) {
 async function displayAlbums() {
   let a = await fetch(
     `https://api.github.com/repos/Rohitrsr1408/Spotify-Clone/contents/songs/`,
-    {
-      headers: {
-        Authorization: `token  ${access_token}`,
-      },
-    }
+    // {
+    //   headers: {
+    //     Authorization: `token  ${access_token}`,
+    //   },
+    // }
   );
   //console.log(a);
   let response = await a.json();
@@ -125,11 +125,11 @@ async function displayAlbums() {
 
       let a = await fetch(
         `https://api.github.com/repos/Rohitrsr1408/Spotify-Clone/contents/songs/${folder}/info.json`,
-        {
-          headers: {
-            Authorization: `token ${access_token}`,
-          },
-        }
+        // {
+        //   headers: {
+        //     Authorization: `token ${access_token}`,
+        //   },
+        // }
       );
       let data = await a.json();
 
