@@ -4,7 +4,7 @@ let currfolder;
 let cardContainer = document.querySelector(".cardContainer");
 let play = document.querySelector(".songbuttons .play");
 let songList = [];
-const access_token = "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";
+const access_token = "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";
 async function getSongs(folder) {
   currfolder = folder;
   let a = await fetch(
